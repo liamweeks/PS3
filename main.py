@@ -35,33 +35,36 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
     """
 
     neighbour_lookup = make_neighbours(edges, vertices)
-    max_colours = 0  # the number of colours needed to colour the graph
+    # max_colours = 0  # the number of colours needed to colour the graph
     vertex_colour = [-1] * len(vertices)  # colour[n] = colour of V_n
 
     if len(vertices) == 0:
         return vertex_colour
 
-    vertex_colour[0] = max_colours
+    vertex_colour[0] = 0 # The first vertex gets the top colour
 
     for i in range(1, len(vertices)):
         # Assign V_i the lowest index colour which does not appear in neighbourhood
-        # used_colours = [ [vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]]] ]
 
-        used_colours = []
+        colours_of_adjacent_vertices = []
         for adjacent_vertex in neighbour_lookup[vertices[i]]:
             if vertex_colour[adjacent_vertex] == -1:
                 # i.e., vertex is not coloured yet
                 continue
             else:
-                # adjacent vertex has some colour
-                 used_colours.append(vertex_colour[adjacent_vertex])
+                # adjacent vertex is coloured
+                 colours_of_adjacent_vertices.append(vertex_colour[adjacent_vertex])
 
 
         # check if there's a colour which we can still use
         for colour in range(len(vertices)):
-            if colour not in used_colours:
+            if colour not in colours_of_adjacent_vertices:
+                # Select the lowest-value colour which is non-adjacent
                 vertex_colour[i] = colour
                 break
-
+    print("---------")
+    print(f"Edges: {edges}" )
+    print(f"Vertices: {vertices}")
+    print(f"Colour: {vertex_colour}" )
 
     return vertex_colour
