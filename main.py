@@ -29,8 +29,13 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
     """
 
     neighbour_lookup = make_neighbours(edges)
-    max_colours = 0 # the number of colours needed to colour the graph
-    vertex_colour = [-1] * len(vertices) # colour[n] = colour of V_n
+    max_colours = 0  # the number of colours needed to colour the graph
+    vertex_colour = [-1] * len(vertices)  # colour[n] = colour of V_n
+
+    for vertex in vertices:
+        if vertex not in neighbour_lookup:
+            # disconnected graph has no neighbouring vertex
+            neighbour_lookup[vertex] = set()
 
     if len(vertices) == 0:
         return vertex_colour
@@ -39,8 +44,9 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
 
     for i in range(1, len(vertices)):
         # Assign V_i the lowest index colour which does not appear in neighbourhood
-        #used_colours = [ [vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]]] ]
-        used_colours = {vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]] if vertex_colour[neighbour] != -1}
+        # used_colours = [ [vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]]] ]
+        used_colours = {vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]] if
+                        vertex_colour[neighbour] != -1}
 
         # check if there's a colour which we can still use
         for colour in range(len(vertices)):
@@ -49,6 +55,4 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
                 break
 
 
-
     return vertex_colour
-
