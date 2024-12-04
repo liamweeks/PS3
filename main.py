@@ -46,8 +46,16 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
     for i in range(1, len(vertices)):
         # Assign V_i the lowest index colour which does not appear in neighbourhood
         # used_colours = [ [vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]]] ]
-        used_colours = {vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]] if
-                        vertex_colour[neighbour] != -1}
+
+        used_colours = []
+        for adjacent_vertex in neighbour_lookup[vertices[i]]:
+            if vertex_colour[adjacent_vertex] == -1:
+                # i.e., vertex is not coloured yet
+                continue
+            else:
+                # adjacent vertex has some colour
+                 used_colours.append(vertex_colour[adjacent_vertex])
+
 
         # check if there's a colour which we can still use
         for colour in range(len(vertices)):
