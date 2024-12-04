@@ -1,7 +1,7 @@
 from typing import List
 
 
-def make_neighbours(edges: List[tuple[int, int]]) -> dict[int, set[int]]:
+def make_neighbours(edges: List[tuple[int, int]], vertices: List[int]) -> dict[int, set[int]]:
     """
     Returns the neighbours of a vertex in a dictionary. dict[vertex] will return a list vertices connected to that vertex
 
@@ -18,6 +18,12 @@ def make_neighbours(edges: List[tuple[int, int]]) -> dict[int, set[int]]:
         neighbours[from_vertex].add(to_vertex)
         neighbours[to_vertex].add(from_vertex)
 
+
+    for vertex in vertices:
+        if vertex not in neighbours:
+            # Disconnected Graph (Edge Case): A disconnected vertex has no neighbours, so set it to an empty set
+            neighbours[vertex] = set()
+
     return neighbours
 
 
@@ -28,14 +34,9 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
     :return: A list of colours describing what colours to assign each vertex.
     """
 
-    neighbour_lookup = make_neighbours(edges)
+    neighbour_lookup = make_neighbours(edges, vertices)
     max_colours = 0  # the number of colours needed to colour the graph
     vertex_colour = [-1] * len(vertices)  # colour[n] = colour of V_n
-
-    for vertex in vertices:
-        if vertex not in neighbour_lookup:
-            # disconnected graph has no neighbouring vertex
-            neighbour_lookup[vertex] = set()
 
     if len(vertices) == 0:
         return vertex_colour
