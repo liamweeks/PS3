@@ -1,7 +1,5 @@
 from typing import List
 
-from wheel.cli import version_f
-
 
 def make_neighbours(edges: List[tuple[int, int]]) -> dict[int, set[int]]:
     """
@@ -40,16 +38,16 @@ def greedy_colouring_algorithm(edges, vertices) -> List[int]:
     vertex_colour[0] = max_colours
 
     for i in range(1, len(vertices)):
-        #Assign V_i the lowest index colour which does not appear in neighbourhood
+        # Assign V_i the lowest index colour which does not appear in neighbourhood
         #used_colours = [ [vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]]] ]
         used_colours = {vertex_colour[neighbour] for neighbour in neighbour_lookup[vertices[i]] if vertex_colour[neighbour] != -1}
 
+        # check if there's a colour which we can still use
         for colour in range(len(vertices)):
             if colour not in used_colours:
                 vertex_colour[i] = colour
-            else:
-                max_colours += 1
-                vertex_colour[i] = max_colours
+                break
+
 
 
     return vertex_colour
